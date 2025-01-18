@@ -16,7 +16,14 @@ const RequestList = observer(() => {
             <div>
               <h3>{request.title}</h3>
               <p className={`urgency ${request.urgency.toLowerCase().replace(" ", "-")}`}>
-                {request.urgency}
+              {
+                request.urgency === "High" ? request.urgency + " ⚡" :
+                request.urgency === "Non Urgent" ? request.urgency + " 😊" :
+                request.urgency === "Urgent" ? request.urgency + " ⚡" :
+                request.urgency === "Emergency" ? request.urgency + " 🔥" :
+                request.urgency === "Low" ? request.urgency + " 😊" :
+                request.urgency === "Less Urgent" ? request.urgency + "🔨" : request.urgency
+              }
               </p>
             </div>
             <div className="actions">

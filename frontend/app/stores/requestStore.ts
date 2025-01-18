@@ -123,19 +123,19 @@ class RequestStore {
   } */
 
   // Set requests and update metrics
-  setRequests(requests: MaintenanceRequest[]) {
+  setRequests = (requests: MaintenanceRequest[]) => {
     this.requests = requests;
     this.updateMetrics();
   }
 
   // Update the metrics
-  updateMetrics() {
+  updateMetrics = () => {
     const resolvedRequests = this.requests.filter((req) => req.status === "Resolved");
-    const openRequests = this.requests.filter((req) => req.status !== "Resolved");
+    const openRequests = this.requests.filter((req) => req.status === "Open");
     const urgentRequests = this.requests.filter((req) =>
       ["Urgent", "Emergency", "High"].includes(req.urgency)
     );
-
+    
     this.openRequestsCount = openRequests.length;
     this.urgentRequestsCount = urgentRequests.length;
     this.averageResolutionTime =
@@ -143,10 +143,15 @@ class RequestStore {
         ? resolvedRequests.reduce((sum, req) => {
             const createdAt = new Date(req.createdAt).getTime();
             const resolvedAt = new Date(req.resolvedAt!).getTime();
-            return sum + (resolvedAt - createdAt);
+            const timeToResolve = resolvedAt - createdAt;
+            console.log('Time to resolve (miliseconds):', timeToResolve);
+            return sum + timeToResolve;
           }, 0) / resolvedRequests.length
         : 0;
-  }
+  
+    this.averageResolutionTime = this.averageResolutionTime / (1000 * 60 * 60 * 24);
+    console.log('Average Resolution Time (in days):', this.averageResolutionTime);
+  };
 }
 
 const requestStore = new RequestStore();

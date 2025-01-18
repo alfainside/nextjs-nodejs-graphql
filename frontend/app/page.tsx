@@ -19,12 +19,14 @@ const HomePage: React.FC = () => {
       <h1>Maintenance Request</h1>
       <Metrics />
       <RequestList />
-      <button
-        className="add-btn"
-        onClick={() => router.push("/maintener")}
-      >
-        +
-      </button>
+      <div className="button-container">
+        <button
+          className="add-btn"
+          onClick={() => router.push("/maintener")}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 };

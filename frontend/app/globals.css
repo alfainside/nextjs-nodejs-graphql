@@ -160,6 +160,13 @@ h1 {
   cursor: not-allowed;
 }
 
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+}
+
 .add-btn {
   background-color: #4caf50;
   color: white;
@@ -169,16 +176,12 @@ h1 {
   height: 50px;
   font-size: 1.5rem;
   cursor: pointer;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .add-btn:hover {
   background-color: #45a049;
 }
-
 
 .header {
   display: flex;
