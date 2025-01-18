@@ -13,11 +13,11 @@ export default function RootLayout({
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); // Menandakan render di klien
+    setIsClient(true);
   }, []);
 
   if (!isClient) {
-    return null; // Menghindari render di sisi server
+    return null;
   }
 
   return (

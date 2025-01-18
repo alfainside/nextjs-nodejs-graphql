@@ -9,6 +9,7 @@ import RequestList from "./components/RequestList";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
+
   useEffect(() => {
     requestStore.fetchRequests();
   }, []);

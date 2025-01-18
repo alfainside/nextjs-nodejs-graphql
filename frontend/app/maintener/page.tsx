@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useRouter } from "next/navigation";  // Pastikan ini benar
+import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 import requestStore from "../stores/requestStore";
@@ -42,7 +42,25 @@ const MaintenanceAddPage: React.FC = () => {
   const router = useRouter();
 
   // Use the mutation hook
-  const [addRequest, { loading, error }] = useMutation(ADD_MAINTENANCE_REQUEST);
+  const [addRequest, { loading, error }] = useMutation(ADD_MAINTENANCE_REQUEST, {
+    refetchQueries: [
+      {
+        query: gql`
+          query GetRequests {
+            getAllRequests {
+              id
+              title
+              status
+              urgency
+              description
+              createdAt
+              resolvedAt
+            }
+          }
+        `,
+      },
+    ],
+  });
 
   // Handle form submission
   const onSubmit = async (data: FormData) => {

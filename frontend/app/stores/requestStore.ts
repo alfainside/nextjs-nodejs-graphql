@@ -6,9 +6,10 @@ import { runInAction } from "mobx";
 export interface MaintenanceRequest {
   id: string;
   title: string;
-  status: "Open" | "Resolved";
+  status: "Open" | "In Progress" | "Resolved";
   urgency: "Non Urgent" | "Less Urgent" | "Urgent" | "Emergency" | "High" | "Low";
   createdAt: string;
+  description: string;
   resolvedAt?: string;
 }
 
@@ -44,11 +45,16 @@ class RequestStore {
   }
 
   // Add a new maintenance request
-  async addRequest(title: string, urgency: "Non Urgent" | "Less Urgent" | "Urgent" | "Emergency" | "High" | "Low", description: string) {
+  async addRequest(
+    title: string,
+    urgency: "Non Urgent" | "Less Urgent" | "Urgent" | "Emergency" | "High" | "Low",
+    status: "Open" | "In Progress" | "Resolved",
+    description: string) 
+    {
     const { data } = await client.mutate({
       mutation: gql`
-        mutation AddRequest($title: String!, $urgency: String!, $description: String!) {
-          addRequest(title: $title, urgency: $urgency, description: $description) {
+        mutation AddRequest($title: String!, $urgency: String!, $status: String!, $description: String!) {
+          addRequest(title: $title, urgency: $urgency, status: $status, description: $description) {
             id
             title
             status
@@ -62,6 +68,7 @@ class RequestStore {
       variables: {
         title,
         urgency,
+        status,
         description,
       },
     });
@@ -73,11 +80,8 @@ class RequestStore {
   resolveRequest = async (id: string) => { 
     const request = this.requests.find((req) => req.id === id);
     if (request && request.status !== "Resolved") {
-      // Update status locally
       request.status = "Resolved";
       request.resolvedAt = new Date().toISOString();
-
-      // Send update to backend
       try {
         const { data } = await client.mutate({
           mutation: gql`
@@ -95,16 +99,14 @@ class RequestStore {
           },
         });
 
-        // If successful, update metrics and requests
         runInAction(() => {
           this.updateMetrics();
           console.log("Request resolved:", data.updateRequestStatus);
         });
       } catch (error) {
         console.error("Error updating request status:", error);
-        // Optionally: revert status update if error occurs
         runInAction(() => {
-          request.status = "Open"; // or whatever the previous state was
+          request.status = "Open";
         });
       }
     }
