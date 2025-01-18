@@ -20,7 +20,7 @@ export class MaintenanceRequestResolver {
     @Arg("description", { nullable: true }) description: string | null
   ): Promise<MaintenanceRequest> {
     if (!description) {
-      description = "";  // Atau bisa berikan default value jika description tidak ada
+      description = "";
     }
     return await this.service.add({ title, urgency, status, description });
   }
