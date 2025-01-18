@@ -9,7 +9,7 @@
 ### Backend Setup
 1. Navigate to the backend directory:
    ```bash
-   cd maintenance-requests-backend
+   cd backend
    ```
 2. Install dependencies:
    ```bash
@@ -23,7 +23,7 @@
 ### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
-   cd maintenance-requests-frontend
+   cd frontend
    ```
 2. Install dependencies:
    ```bash
