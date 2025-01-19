@@ -16,7 +16,7 @@ import { urgencyScheduler } from "./utils/urgencyScheduler";
       console.log("Server running at http://localhost:4000/graphql")
     );
 
-    setInterval(urgencyScheduler, 60 * 1000); // Run every 60 seconds
+    setInterval(urgencyScheduler, 60 * 1000);
   } catch (error) {
     console.error("Error starting the server:", error);
   }
