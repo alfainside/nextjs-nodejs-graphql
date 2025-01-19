@@ -41,26 +41,30 @@ const MaintenanceAddPage: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const router = useRouter();
 
-  // Use the mutation hook
-  const [addRequest, { loading, error }] = useMutation(ADD_MAINTENANCE_REQUEST, {
-    refetchQueries: [
-      {
-        query: gql`
-          query GetRequests {
-            getAllRequests {
-              id
-              title
-              status
-              urgency
-              description
-              createdAt
-              resolvedAt
+  const updateDate = () => {
+    return {
+      refetchQueries: [
+        {
+          query: gql`
+            query GetRequests {
+              getAllRequests {
+                id
+                title
+                status
+                urgency
+                description
+                createdAt
+                resolvedAt
+              }
             }
-          }
-        `,
-      },
-    ],
-  });
+          `,
+        },
+      ],
+    }
+  }
+
+  // Use the mutation hook
+  const [addRequest, { loading, error }] = useMutation(ADD_MAINTENANCE_REQUEST, updateDate());
 
   // Handle form submission
   const onSubmit = async (data: FormData) => {
